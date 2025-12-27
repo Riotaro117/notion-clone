@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+// このファイルはSupabaseの初期設定ファイル
 
 // createClientは第一引数にプロジェクトURL、第二引数にプロジェクトAPIキーを指定できる
 export const supabase = createClient(
