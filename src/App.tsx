@@ -13,6 +13,7 @@ function App() {
   const currentUserStore = useCurrentUserStore();
 
   // 一度のみの実行なので関数は中で定義して責任の所在を明確にする
+  // 認証などReactにない外部の機能は副作用に当てはまるのでuseEffectを使用する
   useEffect(() => {
     const setSession = async () => {
       const currentUser = await authRepository.getCurrentUser();
