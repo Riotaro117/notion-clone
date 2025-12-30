@@ -20,4 +20,17 @@ export const noteRepository = {
     if (error != null) throw new Error(error.message);
     return data;
   },
+
+  async find(userId: string, parentDocumentId?: number) {
+    const query = supabase
+      .from('notes')
+      .select() //
+      .eq('user_id', userId) //第一引数（データベースのカラム名）＝第二引数という条件（変数）
+      .order('created_at', { ascending: false }); //並び順の変更falseなら新しい順
+    const { data } =
+      parentDocumentId != null
+        ? await query.eq('parent_document', parentDocumentId)
+        : await query.is('parent_document', null);
+    return data;
+  },
 };

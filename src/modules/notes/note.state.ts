@@ -1,6 +1,8 @@
 import { atom, useAtom } from 'jotai';
 import { Note } from './note.entity';
 
+// このファイルはノートの状態をグローバルステートにしている
+
 // 初期値は空配列
 const noteAtom = atom<Note[]>([]);
 
