@@ -21,6 +21,7 @@ export const noteRepository = {
     return data;
   },
 
+  // 第一引数に現在のID,第二引数に親のIDが渡ってくる
   async find(userId: string, parentDocumentId?: number) {
     const query = supabase
       .from('notes')

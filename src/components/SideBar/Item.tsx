@@ -19,6 +19,7 @@ export function Item({
   trailingItem,
 }: ItemProps) {
   return (
+    // classNameで表示の切り替え
     <div
       className={cn(
         'group min-h-[27px] text-sm py-1 pr-3 w-full flex items-center text-muted-foreground font-medium',
