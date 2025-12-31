@@ -38,22 +38,28 @@ export function NoteList({ layer = 0, parentId }: NoteListProps) {
           `hidden text-sm font-medium text-muted-foreground/80`,
           layer === 0 && 'hidden'
         )}
+        // layerが深くなればなるほどpadding-leftが大きくなっていく
         style={{ paddingLeft: layer ? `${layer * 12 + 25}px` : undefined }}
       >
         ページがありません
       </p>
-      {notes.map((note) => {
-        return (
-          <div key={note.id}>
-            <NoteItem
-              note={note}
-              layer={layer}
-              onExpand={(e: React.MouseEvent) => fetchChildren(e, note)}
-              onCreate={(e) => createChild(e, note.id)}
-            />
-          </div>
-        );
-      })}
+      {/* filterがあるので無限ループにならない */}
+      {notes
+        .filter((note) => note.parent_document == parentId)
+        .map((note) => {
+          return (
+            <div key={note.id}>
+              <NoteItem
+                note={note}
+                layer={layer}
+                onExpand={(e: React.MouseEvent) => fetchChildren(e, note)}
+                onCreate={(e) => createChild(e, note.id)}
+              />
+              {/* 以下は自分をもう一度呼び出す再帰処理。ノートの小要素をlayerでどんどん深くしていく */}
+              <NoteList layer={layer + 1} parentId={note.id} />
+            </div>
+          );
+        })}
     </>
   );
 }
