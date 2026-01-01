@@ -45,4 +45,10 @@ export const noteRepository = {
       .single();
     return data;
   },
+
+  // ノートのタイトルの更新処理
+  async update(id: number, note: { title?: string; content?: string }) {
+    const { data } = await supabase.from('notes').update(note).eq('id', id).select().single();
+    return data;
+  },
 };
