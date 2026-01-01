@@ -5,6 +5,7 @@ import { useCurrentUserStore } from './modules/auth/current-user.state';
 import { useNoteStore } from './modules/notes/note.state';
 import { useEffect, useState } from 'react';
 import { noteRepository } from './modules/notes/note.repository';
+import { Note } from './modules/notes/note.entity';
 
 const Layout = () => {
   // 分割代入でcurrentUserのみを取り出している
@@ -13,6 +14,8 @@ const Layout = () => {
   const [isLoading, setIsLoading] = useState(false);
   //モーダルの開閉の状態
   const [isShowModal, setIsShowModal] = useState(false);
+  //検索結果の状態
+  const [searchResult, setSearchResult] = useState<Note[]>([]);
 
   // ログイン状態が変更されるたびに実行されるように
   useEffect(() => {
@@ -28,6 +31,13 @@ const Layout = () => {
     loadNotes();
   }, [currentUser]);
 
+  const searchNotes = async (keyword: string) => {
+    const notes = await noteRepository.findByKeyword(currentUser!.id, keyword);
+    if (notes == null) return;
+    noteStore.set(notes);
+    setSearchResult(notes);
+  };
+
   if (currentUser == null) {
     return <Navigate replace to="/signin" />;
   }
@@ -39,9 +49,9 @@ const Layout = () => {
         <Outlet />
         <SearchModal
           isOpen={isShowModal}
-          notes={[]}
+          notes={searchResult}
           onItemSelect={() => {}}
-          onKeywordChanged={() => {}}
+          onKeywordChanged={searchNotes}
           onClose={() => setIsShowModal(false)}
         />
       </main>
