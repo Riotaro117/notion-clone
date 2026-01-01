@@ -14,7 +14,8 @@ export function Home() {
 
   const createNote = async () => {
     // !.は絶対にnullやundefinedではないと主張している
-    const newNote = await noteRepository.create(currentUser!.id, { title });
+    // 第二引数にtitleを入れると空白が影響してしまうため、条件分岐により入れない方が無題になる
+    const newNote = await noteRepository.create(currentUser!.id, {});
     noteStore.set([newNote]);
     setTitle('');
     navigate(`/notes/${newNote.id}`);
