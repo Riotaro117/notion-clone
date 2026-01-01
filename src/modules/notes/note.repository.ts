@@ -45,10 +45,19 @@ export const noteRepository = {
       .single();
     return data;
   },
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> d61e73322df318a18f22296437772dee7f2a5f95
 
   // ノートのタイトルの更新処理
   async update(id: number, note: { title?: string; content?: string }) {
     const { data } = await supabase.from('notes').update(note).eq('id', id).select().single();
     return data;
   },
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 13007aeba44f3544f8ec23dddb547f9e699f9b42
+>>>>>>> d61e73322df318a18f22296437772dee7f2a5f95
 };
