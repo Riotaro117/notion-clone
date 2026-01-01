@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase';
+
 // DBに変更を加える処理をこのファイルに書いている
 
 // 以下はSupabaseのnotesテーブルに「新しいノートを１件作成する」処理を書いている
@@ -32,6 +33,17 @@ export const noteRepository = {
       parentDocumentId != null
         ? await query.eq('parent_document', parentDocumentId)
         : await query.is('parent_document', null);
+    return data;
+  },
+
+  // ノートの検索処理
+  async findByKeyword(user_id: string, keyword: string) {
+    const { data } = await supabase
+      .from('notes')
+      .select()
+      .eq('user_id', user_id)
+      .or(`title.ilike.%${keyword}%,content.ilike.%${keyword}%`) // %が両方で検索が部分一致でもヒットする書き方
+      .order('created_at', { ascending: false });
     return data;
   },
 
