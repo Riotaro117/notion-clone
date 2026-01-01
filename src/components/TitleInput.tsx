@@ -19,7 +19,7 @@ export function TitleInput({ initialData, onTitleChange }: TitleInputProps) {
   return (
     <div className="pl-[54px] group relative">
       <TextAreaAutoSize
-        className="text-5xl bg-transparent font-bold break-words outline-none text-[#3F3F3F 
+        className="text-5xl bg-transparent font-bold break-words outline-none text-[#3F3F3F
         resize-none"
         value={value}
         onChange={(e) => handleInputChange(e.target.value)}
