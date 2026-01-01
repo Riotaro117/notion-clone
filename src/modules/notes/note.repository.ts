@@ -34,4 +34,15 @@ export const noteRepository = {
         : await query.is('parent_document', null);
     return data;
   },
+
+  // 特定のIDのノートのデータを取得する処理
+  async findOne(user_id: string, id: number) {
+    const { data } = await supabase
+      .from('notes')
+      .select()
+      .eq('id', id)
+      .eq('user_id', user_id)
+      .single();
+    return data;
+  },
 };
