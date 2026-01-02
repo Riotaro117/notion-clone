@@ -63,4 +63,11 @@ export const noteRepository = {
     const { data } = await supabase.from('notes').update(note).eq('id', id).select().single();
     return data;
   },
+
+  //自作SQLを用いて、ノートの削除の処理
+  async delete(id: number) {
+    const { error } = await supabase.rpc('delete_children_notes_recursively', { note_id: id });
+    if (error !== null) throw new Error(error.message);
+    return true;
+  },
 };
