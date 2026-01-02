@@ -28,7 +28,20 @@ export const useNoteStore = () => {
     });
   };
 
+  const deleteNote = (id: number) => {
+    const findChildrenIds = (parentId: number): number[] => {
+      const childrenIds = notes
+        .filter((note) => note.parent_document == parentId)
+        .map((child) => child.id);
+      // 各小要素に対してさらにその小要素も一致しているものを探す
+      return childrenIds.concat(...childrenIds.map((childId) => findChildrenIds(childId)));
+    };
+    const childrenIds = findChildrenIds(id);
+    // 更新用の関数で論理否定でtrueが返ってきている（一致しないもの）だけを返す
+    setNotes((oldNotes) => oldNotes.filter((note) => ![...childrenIds, id].includes(note.id)));
+  };
+
   const getOne = (id: number) => notes.find((note) => note.id == id);
 
-  return { getAll: () => notes, set, getOne };
+  return { getAll: () => notes, set, delete: deleteNote, getOne };
 };

@@ -44,6 +44,14 @@ export function NoteList({ layer = 0, parentId }: NoteListProps) {
     });
   };
 
+  // ノートの削除
+  const deleteNote = async (e: React.MouseEvent, noteId: number) => {
+    e.stopPropagation();
+    await noteRepository.delete(noteId);
+    noteStore.delete(noteId);
+    navigate('/');
+  };
+
   // ページを遷移する
   const moveToDetail = (noteId: number) => {
     navigate(`/notes/${noteId}`);
@@ -74,6 +82,7 @@ export function NoteList({ layer = 0, parentId }: NoteListProps) {
                 onClick={() => moveToDetail(note.id)}
                 onExpand={(e: React.MouseEvent) => fetchChildren(e, note)}
                 onCreate={(e) => createChild(e, note.id)}
+                onDelete={(e) => deleteNote(e, note.id)}
               />
               {/* 以下は自分をもう一度呼び出す再帰処理。ノートの小要素をlayerでどんどん深くしていく */}
               {expanded.get(note.id) && <NoteList layer={layer + 1} parentId={note.id} />}
