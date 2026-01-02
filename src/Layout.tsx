@@ -6,6 +6,7 @@ import { useNoteStore } from './modules/notes/note.state';
 import { useEffect, useState } from 'react';
 import { noteRepository } from './modules/notes/note.repository';
 import { Note } from './modules/notes/note.entity';
+import { subscribe } from './lib/supabase';
 
 const Layout = () => {
   const navigate = useNavigate();
@@ -30,6 +31,19 @@ const Layout = () => {
       setIsLoading(false);
     };
     loadNotes();
+
+    // リアルタイムで更新する処理
+    const subscribeNote = () => {
+      if (currentUser == null) return;
+      return subscribe(currentUser!.id, (payload) => {
+        if (payload.eventType === 'INSERT' || payload.eventType === 'UPDATE') {
+          noteStore.set([payload.new]);
+        } else if (payload.eventType === 'DELETE') {
+          noteStore.delete(payload.old.id!);
+        }
+      });
+    };
+    subscribeNote();
   }, [currentUser]);
 
   const searchNotes = async (keyword: string) => {

@@ -5,7 +5,7 @@ import {
 } from '@supabase/supabase-js';
 import { Database } from '../../database.types';
 import { Note } from '@/modules/notes/note.entity';
-import { channel } from 'diagnostics_channel';
+
 // このファイルはSupabaseの初期設定ファイル
 
 // createClientは第一引数にプロジェクトURL、第二引数にプロジェクトAPIキーを指定できる
@@ -14,6 +14,7 @@ export const supabase = createClient<Database>(
   import.meta.env.VITE_SUPABASE_API_KEY
 );
 
+// リアルタイムで更新するための処理
 export const subscribe = (
   userId: string,
   callback: (payload: RealtimePostgresChangesPayload<Note>) => void
